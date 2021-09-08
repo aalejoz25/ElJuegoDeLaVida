@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Juego {
     private static Lienzo lienzo;
-    private static boolean marcar = true;
 
 
     /**
@@ -63,7 +62,7 @@ public class Juego {
         } while (lienzo.hayAcciones() == true);
         int numeroDeOrganismos = lienzo.numeroDeOrganismos();
         if (numeroDeOrganismos > 0)
-            System.out.println(Consola.Color.GREEN + "Juego Ganado con " + numeroDeOrganismos + " organismos" + Consola.Color.RESET);
+            System.out.println(Consola.Color.GREEN + "Juego Finalizado con " + numeroDeOrganismos + " organismos" + Consola.Color.RESET);
         else System.out.println(Consola.Color.RED + "Juego Perdido" + Consola.Color.RESET);
         System.out.println("Juego Terminado");
     }
@@ -151,17 +150,5 @@ public class Juego {
         }
     }
 
-    /**
-     * Regresa si el marcado de acciones futuras del tablero está activo
-     *
-     * @return boolean
-     */
-    static boolean getMarcar() {
-        return marcar;
-    }
-    /**
-     * Regresa si la impresión del proceso de revisión de celdas vecinas del tablero está activo
-     * @return boolean
-     * */
 
 }

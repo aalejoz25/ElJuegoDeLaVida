@@ -20,9 +20,9 @@ public class Lienzo {
     /**
      * Construye el tablero con toda la informacion necesaria
      *
-     * @param numeroDeFilas        número de filas del tablero
-     * @param numeroDeColumnas     número de columnas del tablero
-     * @param porcentajeDeOrganismos   porcentaje de organismos vivos con respecto al numero de celdas del tablero
+     * @param numeroDeFilas          número de filas del tablero
+     * @param numeroDeColumnas       número de columnas del tablero
+     * @param porcentajeDeOrganismos porcentaje de organismos vivos con respecto al numero de celdas del tablero
      */
     public Lienzo(int numeroDeFilas, int numeroDeColumnas, int porcentajeDeOrganismos) {
         filas = numeroDeFilas;
@@ -55,10 +55,6 @@ public class Lienzo {
 
     int getNumeroDeColumnas() {
         return columnas;
-    }
-
-    int getGeneracionActual() {
-        return generacion;
     }
 
 
@@ -161,25 +157,20 @@ public class Lienzo {
         System.out.print(" ");
         for (int c = 0; c < columnas; c++) {
             System.out.print(" ");
-            System.out.print(c);
         }
         System.out.print(" ");
 
         for (int f = 0; f < celulas.length; f++) {
-            System.out.print("\n" + f);
+            System.out.print("\n");
             for (int c = 0; c < celulas[f].length; c++) {
                 System.out.print("|");
                 String caracter;
                 String color;
                 if (celulas[f][c].getEstado()) {
-                    caracter = "*";
-                    if (Juego.getMarcar()) {
-                        color = (celulas[f][c].getAccion() == AccionDeCelula.Eliminar) ? Consola.Color.RED : Consola.Color.BLUE;
-                    } else color = Consola.Color.BLUE;
+                    caracter = "↑";
+                    color = Consola.Color.RED;
                 } else {
-                    if (Juego.getMarcar()) {
-                        caracter = (celulas[f][c].getAccion() == AccionDeCelula.Agregar) ? "¤" : " ";
-                    } else caracter = " ";
+                    caracter = " ";
                     color = Consola.Color.WHITE;
                 }
                 System.out.print(color + caracter + Consola.Color.RESET);
