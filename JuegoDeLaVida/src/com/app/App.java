@@ -9,7 +9,7 @@ public class App {
         System.out.println("El Juego de la Vida\n");
 
         try {
-            miJuego.configurar();
+            miJuego.configurarParametros();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

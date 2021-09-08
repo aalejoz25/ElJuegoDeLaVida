@@ -14,7 +14,7 @@ public class Lienzo {
     private final Celula[][] celulas;
     private final int filas;
     private final int columnas;
-    private final int numeroDeOrganismosVivosIniciales;
+    private final int numeroDeCelulasVivasIniciales;
     private int generacion = 1;
 
     /**
@@ -22,19 +22,19 @@ public class Lienzo {
      *
      * @param numeroDeFilas           número de filas del tablero
      * @param numeroDeColumnas        número de columnas del tablero
-     * @param numeroDeOrganismosVivos numero de organismos vivos con respecto al numero de celdas del tablero
+     * @param numeroDeCelulasVivas numero de celulas vivas con respecto al numero de celdas del tablero
      */
-    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int numeroDeOrganismosVivos) {
+    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int numeroDeCelulasVivas, String representacionDeCelula) {
         filas = numeroDeFilas;
         columnas = numeroDeColumnas;
         int numeroDeCeldas = filas * columnas;
         celulas = new Celula[numeroDeFilas][numeroDeColumnas];
 
-        numeroDeOrganismosVivosIniciales = numeroDeOrganismosVivos;
+        numeroDeCelulasVivasIniciales = numeroDeCelulasVivas;
 
         for (int f = 0; f < celulas.length; f++) {
             for (int c = 0; c < celulas[f].length; c++) {
-                celulas[f][c] = new Celula("•");
+                celulas[f][c] = new Celula(representacionDeCelula);
             }
         }
         System.out.println("---------------------------------------------------------");
@@ -42,7 +42,7 @@ public class Lienzo {
                 filas + " filas y " + columnas + " columnas = " +
                 numeroDeCeldas + " celdas");
 
-        System.out.println("Cantidad de organismos iniciales = " + numeroDeOrganismosVivos);
+        System.out.println("Cantidad de organismos iniciales = " + numeroDeCelulasVivas);
         System.out.println("---------------------------------------------------------");
     }
 
@@ -55,8 +55,8 @@ public class Lienzo {
     }
 
 
-    int getNumeroDeOrganismosVivosIniciales() {
-        return numeroDeOrganismosVivosIniciales;
+    int getNumeroDeCelulasVivasIniciales() {
+        return numeroDeCelulasVivasIniciales;
     }
 
     Celula[][] getCelulas() {
@@ -150,6 +150,7 @@ public class Lienzo {
      * @return void
      */
     public void mostrarCelulas() {
+        System.out.print("\n");
         System.out.println("Lienzo Generacion " + generacion);
         System.out.print(" ");
         for (int c = 0; c < columnas; c++) {
@@ -184,7 +185,7 @@ public class Lienzo {
      */
     public void generarOrganismosRandom() {
         Random random = new Random();
-        for (int i = 0; i < numeroDeOrganismosVivosIniciales; i++) {
+        for (int i = 0; i < numeroDeCelulasVivasIniciales; i++) {
             int fil;
             int col;
             do {

@@ -6,110 +6,59 @@ public class Juego {
     private static Lienzo lienzo;
 
 
-    /**
-     * Funcion de entrada del programa
-     * @param args arreglo String con los parámetros ingresados al inciar el programa
-     */
+    public void configurarParametros() {
+        int filas = 20;
+        int columnas = 20;
 
-
-    /**
-     * Obtiene entrada del usuario referente al juego,
-     * despues inicializa el tablero y configuraciones de juego,
-     * finalmente inicia el Game Loop
-     *
-     * @return void
-     */
-    public void configurar() {
-
-        int filas =50;
-        int columnas =50;
-
-        System.out.print("Porcentaje de Organismos Iniciales (de 1 a 50) % : ");
-        int porcentajeDeOrganismosIniciales = leerEntero();
-        if (porcentajeDeOrganismosIniciales < 1) porcentajeDeOrganismosIniciales = 1;
-        else if (porcentajeDeOrganismosIniciales > 50) porcentajeDeOrganismosIniciales = 50;
-        System.out.print("Desea generar las celulas en posiciones aleatorias (Sí: true , No: false)");
+        System.out.print("Numero de celulas iniciales (max " + filas * columnas + "): ");
+        int numeroDeCelulasIniciales = leerEntero();
+        if (numeroDeCelulasIniciales < 1) numeroDeCelulasIniciales = 1;
+        else if (numeroDeCelulasIniciales > filas * columnas) {
+            numeroDeCelulasIniciales = 5;
+            System.out.println("Se ha establecido el numero de celulas iniciales en 5");
+        }
+        System.out.print("Desea generar las celulas en posiciones aleatorias (Sí: true , No: false): ");
         boolean organismosRandom = leerBooleano();
-
-        lienzo = new Lienzo(filas, columnas, porcentajeDeOrganismosIniciales);
+        System.out.print("Digite un caracter con el que desea representar la celula: ");
+        String representacion = leerString();
+        lienzo = new Lienzo(filas, columnas, numeroDeCelulasIniciales, representacion);
         if (organismosRandom) lienzo.generarOrganismosRandom();
-        else configurarCoordenadasDeOrganismosIniciales();
+        else configurarCoordenadasDeCelulasIniciales();
         bucleDeEjecucion();
     }
 
-    /**
-     * El famoso GameLoop donde se ejecuta el juego de forma cíclica
-     * hasta que se cumpla alguna condición de terminación
-     *
-     * @return void
-     */
     private static void bucleDeEjecucion() {
         Scanner sc = new Scanner(System.in);
         lienzo.calcularAcciones();
         lienzo.mostrarCelulas();
-        System.out.print("Esperando enter ->");
-        sc.nextLine();
         do {
             lienzo.aplicarAcciones();
             lienzo.calcularAcciones();
             lienzo.mostrarCelulas();
             if (!lienzo.hayAcciones()) break; //Ya no hay cambios en generaciones siguientes
             if (lienzo.numeroDeOrganismos() == 0) break; //Ya no hay organismos
-            System.out.print("Continuar...");
-            sc.nextLine();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("error" + e);
+            }
         } while (lienzo.hayAcciones() == true);
         int numeroDeOrganismos = lienzo.numeroDeOrganismos();
         if (numeroDeOrganismos > 0)
             System.out.println("No hay mas movimientos Finalizado con " + numeroDeOrganismos + " organismos");
         else System.out.println("Ya no hay organismos");
-        System.out.println("Juego Terminado");
+        System.out.println("Finalizado");
     }
 
-    /**
-     * Obtiene entrada de usuario de tipo entero
-     *
-     * @return int
-     */
-    private static int leerEntero() {
-        Scanner sc = new Scanner(System.in);
-        int i = 0;
-        try {
-            i = sc.nextInt();
-        } catch (NumberFormatException e) {
-            System.err.println(e.getMessage());
-        }
-        return i;
-    }
 
-    /**
-     * Obtiene entrada de usuario de tipo booleano
-     *
-     * @return boolean
-     */
-    private static boolean leerBooleano() {
-        Scanner sc = new Scanner(System.in);
-        boolean b = true;
-        try {
-            b = sc.nextBoolean();
-        } catch (Exception e) {
-            System.out.println("Error de entrada -> se usa Default (true)");
-        }
-        return b;
-    }
-
-    /**
-     * Obtiene entrada de usuario para definir las posiciones de los organismos iniciales en el tablero
-     *
-     * @return void
-     */
-    private static void configurarCoordenadasDeOrganismosIniciales() {
-        for (int i = 1; i <= lienzo.getNumeroDeOrganismosVivosIniciales(); i++) {
+    private static void configurarCoordenadasDeCelulasIniciales() {
+        for (int i = 1; i <= lienzo.getNumeroDeCelulasVivasIniciales(); i++) {
 
             int x = 0;
             int y = 0;
 
             do {
-                System.out.println("Organismo " + i);
+                System.out.println("Celula " + i);
                 System.out.print(" x = ");
 
                 try {
@@ -141,11 +90,46 @@ public class Juego {
                 }
 
                 if (lienzo.getCelulas()[x][y].getEstado())
-                    System.out.println("La celda [" + x + "][" + y + "] ya tien organismo.\nReiniciando proceso para organismo inicial " + i);
+                    System.out.println("La celda [" + x + "][" + y + "] ya tiene celula.\nReiniciando proceso para celula inicial " + i);
             } while (lienzo.getCelulas()[x][y].getEstado());
 
             lienzo.getCelulas()[x][y].setEstado(true);
         }
+    }
+
+
+    private static int leerEntero() {
+        Scanner sc = new Scanner(System.in);
+        int i = 0;
+        try {
+            i = sc.nextInt();
+        } catch (NumberFormatException e) {
+            System.err.println(e.getMessage());
+        }
+        return i;
+    }
+
+    private static String leerString() {
+        Scanner sc = new Scanner(System.in);
+        String caracter = "•";
+        try {
+            caracter = sc.nextLine();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return caracter;
+    }
+
+
+    private static boolean leerBooleano() {
+        Scanner sc = new Scanner(System.in);
+        boolean b = true;
+        try {
+            b = sc.nextBoolean();
+        } catch (Exception e) {
+            System.out.println("Error de entrada -> se usa Default (true)");
+        }
+        return b;
     }
 
 
