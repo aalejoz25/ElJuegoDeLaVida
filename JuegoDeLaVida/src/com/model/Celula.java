@@ -1,4 +1,4 @@
-package com.mcc;
+package com.model;
 
 /**
  * Elemento basico del tablero.

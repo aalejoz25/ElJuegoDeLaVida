@@ -1,4 +1,4 @@
-package com.mcc;
+package com.model;
 
 /** Define una accion a aplicar a una celda,
  * esto permite que la acción sea definida pero aplicada posteriormente

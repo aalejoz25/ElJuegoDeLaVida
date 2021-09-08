@@ -1,10 +1,10 @@
-package com.mcc;
+package com.model;
 
 import com.util.Consola;
 
 import java.util.Scanner;
 
-class Motor {
+public class Juego {
     private static Lienzo tablero;
     private static boolean marcar = true;
 
@@ -13,16 +13,7 @@ class Motor {
      * Funcion de entrada del programa
      * @param args arreglo String con los parámetros ingresados al inciar el programa
      */
-    public static void main(String[] args) {
-        System.out.println("Tecnologías de programación");
-        System.out.println("Juego de la Vida de John H. Conway\n");
 
-        try {
-            configurar();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     /**
      * Obtiene entrada del usuario referente al juego,
@@ -30,7 +21,7 @@ class Motor {
      * finalmente inicia el Game Loop
      * @return void
      */
-    private static void configurar() {
+    public void configurar() {
         System.out.print("Numero de Filas : ");
         int filas = leerEntero();
         System.out.print("Numero de Columnas : ");

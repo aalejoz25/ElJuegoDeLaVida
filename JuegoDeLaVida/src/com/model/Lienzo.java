@@ -1,4 +1,4 @@
-package com.mcc;
+package com.model;
 
 import com.util.Consola;
 
@@ -179,11 +179,11 @@ class Lienzo {
                 String color;
                 if (celulas[f][c].getEstado()) {
                     caracter = "*";
-                    if (Motor.getMarcar()) {
+                    if (Juego.getMarcar()) {
                         color = (celulas[f][c].getAccion() == AccionDeCelula.Eliminar) ? Consola.Color.RED : Consola.Color.BLUE;
                     } else color = Consola.Color.BLUE;
                 } else {
-                    if (Motor.getMarcar()) {
+                    if (Juego.getMarcar()) {
                         caracter = (celulas[f][c].getAccion() == AccionDeCelula.Agregar) ? "¤" : " ";
                     } else caracter = " ";
                     color = Consola.Color.WHITE;
