@@ -10,11 +10,10 @@ import java.util.Random;
  * así como toda la informacion sobre numero de filas/columnas, numero de generaciones,
  * generacion actual y numero de organismos inicales
  */
-class Lienzo {
+public class Lienzo {
     private final Celula[][] celulas;
     private final int filas;
     private final int columnas;
-    private final int numeroDeGeneraciones;
     private final int numeroDeOrganismosIniciales;
     private int generacion = 1;
 
@@ -23,16 +22,14 @@ class Lienzo {
      *
      * @param numeroDeFilas        número de filas del tablero
      * @param numeroDeColumnas     número de columnas del tablero
-     * @param numGeneraciones número de generaciones del juego
      * @param porcentajeDeOrganismos   porcentaje de organismos vivos con respecto al numero de celdas del tablero
      */
-    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int numGeneraciones, int porcentajeDeOrganismos) {
+    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int porcentajeDeOrganismos) {
         filas = numeroDeFilas;
         columnas = numeroDeColumnas;
         int numeroDeCeldas = filas * columnas;
 
         celulas = new Celula[numeroDeFilas][numeroDeColumnas];
-        numeroDeGeneraciones = numGeneraciones;
         numeroDeOrganismosIniciales = Math.round((porcentajeDeOrganismos * filas * columnas) / 100f);
 
         for (int f = 0; f < celulas.length; f++) {
@@ -64,9 +61,6 @@ class Lienzo {
         return generacion;
     }
 
-    int getNumeroDeGeneraciones() {
-        return numeroDeGeneraciones;
-    }
 
     int getNumeroDeOrganismosIniciales() {
         return numeroDeOrganismosIniciales;
@@ -82,7 +76,7 @@ class Lienzo {
      * @param numVecinos numero de vecinos de la celda
      * @param organismo  estado actual de la celda
      */
-    private AccionDeCelula definirAccionParaCeldas(int numVecinos, boolean organismo) {
+    private AccionDeCelula definirAccionParaCelula(int numVecinos, boolean organismo) {
 
         //todo si esta vivo y (vecines<2 or >=4)
         //todo si esta no vivo y vecinos ==3
@@ -109,7 +103,7 @@ class Lienzo {
      * @param y columna
      * @return AccionDeCelda
      */
-    private int contarVecinosParaCeldaExcepciones(int x, int y) {
+    private int contarVecinosParaCelula(int x, int y) {
 
         byte vecinos = 0;
         for (int f = -1; f <= 1; f++) {
@@ -133,8 +127,8 @@ class Lienzo {
     public void calcularAcciones() {
         for (byte f = 0; f < celulas.length; f++) {
             for (byte c = 0; c < celulas[f].length; c++) {
-                int vecinos = contarVecinosParaCeldaExcepciones(f, c);
-                AccionDeCelula accion = definirAccionParaCeldas(vecinos, celulas[f][c].getEstado());
+                int vecinos = contarVecinosParaCelula(f, c);
+                AccionDeCelula accion = definirAccionParaCelula(vecinos, celulas[f][c].getEstado());
                 celulas[f][c].setAccion(accion);
             }
         }
@@ -157,13 +151,13 @@ class Lienzo {
     }
 
     /**
-     * Imprime el tablero en la consola.
+     * Imprime el lienzo en la consola.
      * Muestra las acciones de celdas si la funcion está activa
      *
      * @return void
      */
-    public void mostrarCeldas() {
-        System.out.println("Tablero Generacion " + generacion);
+    public void mostrarCelulas() {
+        System.out.println("Lienzo Generacion " + generacion);
         System.out.print(" ");
         for (int c = 0; c < columnas; c++) {
             System.out.print(" ");

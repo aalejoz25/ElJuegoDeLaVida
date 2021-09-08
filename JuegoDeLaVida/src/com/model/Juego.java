@@ -5,7 +5,7 @@ import com.util.Consola;
 import java.util.Scanner;
 
 public class Juego {
-    private static Lienzo tablero;
+    private static Lienzo lienzo;
     private static boolean marcar = true;
 
 
@@ -19,53 +19,49 @@ public class Juego {
      * Obtiene entrada del usuario referente al juego,
      * despues inicializa el tablero y configuraciones de juego,
      * finalmente inicia el Game Loop
+     *
      * @return void
      */
     public void configurar() {
-        System.out.print("Numero de Filas : ");
-        int filas = leerEntero();
-        System.out.print("Numero de Columnas : ");
-        int columnas = leerEntero();
-        System.out.print("Numero de Generaciones (2 o más): ");
-        int generaciones = leerEntero();
-        generaciones = Math.max(generaciones, 2);
+        //System.out.print("Numero de Filas : ");
+        int filas = 30;
+        //System.out.print("Numero de Columnas : ");
+        int columnas = 30;
         System.out.print("Porcentaje de Organismos Iniciales (de 1 a 50) % : ");
         int porcentajeDeOrganismosIniciales = leerEntero();
         if (porcentajeDeOrganismosIniciales < 1) porcentajeDeOrganismosIniciales = 1;
         else if (porcentajeDeOrganismosIniciales > 50) porcentajeDeOrganismosIniciales = 50;
         System.out.print("Generar organismos iniciales en posiciones random Sí: true , No: false ");
         boolean organismosRandom = leerBooleano();
-        System.out.print("Marcar acciones en tablero: true , No: false ");
-        marcar = leerBooleano();
 
-
-        tablero = new Lienzo(filas, columnas, generaciones, porcentajeDeOrganismosIniciales);
-        if (organismosRandom) tablero.generarOrganismosRandom();
+        lienzo = new Lienzo(filas, columnas, porcentajeDeOrganismosIniciales);
+        if (organismosRandom) lienzo.generarOrganismosRandom();
         else configurarCoordenadasDeOrganismosIniciales();
-        ejecutarGameLoop();
+        bucleDeEjecucion();
     }
 
     /**
      * El famoso GameLoop donde se ejecuta el juego de forma cíclica
      * hasta que se cumpla alguna condición de terminación
+     *
      * @return void
-     * */
-    private static void ejecutarGameLoop() {
+     */
+    private static void bucleDeEjecucion() {
         Scanner sc = new Scanner(System.in);
-        tablero.calcularAcciones();
-        tablero.mostrarCeldas();
+        lienzo.calcularAcciones();
+        lienzo.mostrarCelulas();
         System.out.print("Esperando enter ->");
         sc.nextLine();
         do {
-            tablero.aplicarAcciones();
-            tablero.calcularAcciones();
-            tablero.mostrarCeldas();
-            if (!tablero.hayAcciones()) break; //Ya no hay cambios en generaciones siguientes
-            if (tablero.numeroDeOrganismos() == 0) break; //Ya no hay organismos
+            lienzo.aplicarAcciones();
+            lienzo.calcularAcciones();
+            lienzo.mostrarCelulas();
+            if (!lienzo.hayAcciones()) break; //Ya no hay cambios en generaciones siguientes
+            if (lienzo.numeroDeOrganismos() == 0) break; //Ya no hay organismos
             System.out.print("Presione enter ->");
             sc.nextLine();
-        } while (tablero.getGeneracionActual() < tablero.getNumeroDeGeneraciones());
-        int numeroDeOrganismos = tablero.numeroDeOrganismos();
+        } while (lienzo.hayAcciones() == true);
+        int numeroDeOrganismos = lienzo.numeroDeOrganismos();
         if (numeroDeOrganismos > 0)
             System.out.println(Consola.Color.GREEN + "Juego Ganado con " + numeroDeOrganismos + " organismos" + Consola.Color.RESET);
         else System.out.println(Consola.Color.RED + "Juego Perdido" + Consola.Color.RESET);
@@ -74,8 +70,9 @@ public class Juego {
 
     /**
      * Obtiene entrada de usuario de tipo entero
+     *
      * @return int
-     * */
+     */
     private static int leerEntero() {
         Scanner sc = new Scanner(System.in);
         int i = 0;
@@ -89,8 +86,9 @@ public class Juego {
 
     /**
      * Obtiene entrada de usuario de tipo booleano
+     *
      * @return boolean
-     * */
+     */
     private static boolean leerBooleano() {
         Scanner sc = new Scanner(System.in);
         boolean b = true;
@@ -104,10 +102,11 @@ public class Juego {
 
     /**
      * Obtiene entrada de usuario para definir las posiciones de los organismos iniciales en el tablero
+     *
      * @return void
-     * */
+     */
     private static void configurarCoordenadasDeOrganismosIniciales() {
-        for (int i = 1; i <= tablero.getNumeroDeOrganismosIniciales(); i++) {
+        for (int i = 1; i <= lienzo.getNumeroDeOrganismosIniciales(); i++) {
 
             int x = 0;
             int y = 0;
@@ -121,8 +120,8 @@ public class Juego {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                if (x >= tablero.getNumeroDeFilas()) {
-                    x = tablero.getNumeroDeFilas() - 1;
+                if (x >= lienzo.getNumeroDeFilas()) {
+                    x = lienzo.getNumeroDeFilas() - 1;
                     System.out.println("x -> " + x);
                 } else if (x < 0) {
                     x = 0;
@@ -136,26 +135,27 @@ public class Juego {
                     System.out.println(e.getMessage());
                 }
 
-                if (y >= tablero.getNumeroDeColumnas()) {
-                    y = tablero.getNumeroDeColumnas() - 1;
+                if (y >= lienzo.getNumeroDeColumnas()) {
+                    y = lienzo.getNumeroDeColumnas() - 1;
                     System.out.println("y -> " + y);
                 } else if (y < 0) {
                     y = 0;
                     System.out.println("y -> " + y);
                 }
 
-                if (tablero.getCelulas()[x][y].getEstado())
+                if (lienzo.getCelulas()[x][y].getEstado())
                     System.out.println("La celda [" + x + "][" + y + "] ya tien organismo.\nReiniciando proceso para organismo inicial " + i);
-            } while (tablero.getCelulas()[x][y].getEstado());
+            } while (lienzo.getCelulas()[x][y].getEstado());
 
-            tablero.getCelulas()[x][y].setEstado(true);
+            lienzo.getCelulas()[x][y].setEstado(true);
         }
     }
 
     /**
      * Regresa si el marcado de acciones futuras del tablero está activo
+     *
      * @return boolean
-     * */
+     */
     static boolean getMarcar() {
         return marcar;
     }

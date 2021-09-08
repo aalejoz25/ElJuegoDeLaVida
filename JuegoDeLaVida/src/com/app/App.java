@@ -6,8 +6,7 @@ public class App {
 
     public static void main(String[] args) {
         Juego miJuego = new Juego();
-        System.out.println("Tecnologías de programación");
-        System.out.println("Juego de la Vida de John H. Conway\n");
+        System.out.println("El Juego de la Vida\n");
 
         try {
             miJuego.configurar();
