@@ -1,11 +1,5 @@
 package com.model;
 
-/**
- * Elemento basico del tablero.
- * Cada celda define su estado presente y futuro mediante
- * una AccionDeCelda (estado siguiente generación)
- * y un booleano (estado actual / organismo )
- */
 public class Celula {
     private AccionDeCelula accion;
     private boolean estaViva;
