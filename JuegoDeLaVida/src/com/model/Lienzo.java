@@ -14,27 +14,27 @@ public class Lienzo {
     private final Celula[][] celulas;
     private final int filas;
     private final int columnas;
-    private final int numeroDeOrganismosIniciales;
+    private final int numeroDeOrganismosVivosIniciales;
     private int generacion = 1;
 
     /**
      * Construye el tablero con toda la informacion necesaria
      *
-     * @param numeroDeFilas          número de filas del tablero
-     * @param numeroDeColumnas       número de columnas del tablero
-     * @param porcentajeDeOrganismos porcentaje de organismos vivos con respecto al numero de celdas del tablero
+     * @param numeroDeFilas           número de filas del tablero
+     * @param numeroDeColumnas        número de columnas del tablero
+     * @param numeroDeOrganismosVivos numero de organismos vivos con respecto al numero de celdas del tablero
      */
-    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int porcentajeDeOrganismos) {
+    public Lienzo(int numeroDeFilas, int numeroDeColumnas, int numeroDeOrganismosVivos) {
         filas = numeroDeFilas;
         columnas = numeroDeColumnas;
         int numeroDeCeldas = filas * columnas;
-
         celulas = new Celula[numeroDeFilas][numeroDeColumnas];
-        numeroDeOrganismosIniciales = Math.round((porcentajeDeOrganismos * filas * columnas) / 100f);
+
+        numeroDeOrganismosVivosIniciales = numeroDeOrganismosVivos;
 
         for (int f = 0; f < celulas.length; f++) {
             for (int c = 0; c < celulas[f].length; c++) {
-                celulas[f][c] = new Celula();
+                celulas[f][c] = new Celula("•");
             }
         }
         System.out.println("---------------------------------------------------------");
@@ -42,10 +42,7 @@ public class Lienzo {
                 filas + " filas y " + columnas + " columnas = " +
                 numeroDeCeldas + " celdas");
 
-        System.out.println("Cantidad de organismos iniciales = " +
-                numeroDeCeldas + " x " + porcentajeDeOrganismos +
-                " % " + " = " + (porcentajeDeOrganismos * filas * columnas) / 100f
-                + " -> " + numeroDeOrganismosIniciales);
+        System.out.println("Cantidad de organismos iniciales = " + numeroDeOrganismosVivos);
         System.out.println("---------------------------------------------------------");
     }
 
@@ -58,8 +55,8 @@ public class Lienzo {
     }
 
 
-    int getNumeroDeOrganismosIniciales() {
-        return numeroDeOrganismosIniciales;
+    int getNumeroDeOrganismosVivosIniciales() {
+        return numeroDeOrganismosVivosIniciales;
     }
 
     Celula[][] getCelulas() {
@@ -167,11 +164,11 @@ public class Lienzo {
                 String caracter;
                 String color;
                 if (celulas[f][c].getEstado()) {
-                    caracter = "↑";
+                    caracter = celulas[0][0].getRepresentacionGrafica();
                     color = Consola.Color.RED;
                 } else {
                     caracter = " ";
-                    color = Consola.Color.WHITE;
+                    color = Consola.Color.TRANSPARENTE;
                 }
                 System.out.print(color + caracter + Consola.Color.RESET);
             }
@@ -187,7 +184,7 @@ public class Lienzo {
      */
     public void generarOrganismosRandom() {
         Random random = new Random();
-        for (int i = 0; i < numeroDeOrganismosIniciales; i++) {
+        for (int i = 0; i < numeroDeOrganismosVivosIniciales; i++) {
             int fil;
             int col;
             do {

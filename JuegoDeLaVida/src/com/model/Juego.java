@@ -1,7 +1,5 @@
 package com.model;
 
-import com.util.Consola;
-
 import java.util.Scanner;
 
 public class Juego {
@@ -22,15 +20,15 @@ public class Juego {
      * @return void
      */
     public void configurar() {
-        //System.out.print("Numero de Filas : ");
-        int filas = 30;
-        //System.out.print("Numero de Columnas : ");
-        int columnas = 30;
+
+        int filas =50;
+        int columnas =50;
+
         System.out.print("Porcentaje de Organismos Iniciales (de 1 a 50) % : ");
         int porcentajeDeOrganismosIniciales = leerEntero();
         if (porcentajeDeOrganismosIniciales < 1) porcentajeDeOrganismosIniciales = 1;
         else if (porcentajeDeOrganismosIniciales > 50) porcentajeDeOrganismosIniciales = 50;
-        System.out.print("Generar organismos iniciales en posiciones random Sí: true , No: false ");
+        System.out.print("Desea generar las celulas en posiciones aleatorias (Sí: true , No: false)");
         boolean organismosRandom = leerBooleano();
 
         lienzo = new Lienzo(filas, columnas, porcentajeDeOrganismosIniciales);
@@ -57,13 +55,13 @@ public class Juego {
             lienzo.mostrarCelulas();
             if (!lienzo.hayAcciones()) break; //Ya no hay cambios en generaciones siguientes
             if (lienzo.numeroDeOrganismos() == 0) break; //Ya no hay organismos
-            System.out.print("Presione enter ->");
+            System.out.print("Continuar...");
             sc.nextLine();
         } while (lienzo.hayAcciones() == true);
         int numeroDeOrganismos = lienzo.numeroDeOrganismos();
         if (numeroDeOrganismos > 0)
-            System.out.println(Consola.Color.GREEN + "Juego Finalizado con " + numeroDeOrganismos + " organismos" + Consola.Color.RESET);
-        else System.out.println(Consola.Color.RED + "Juego Perdido" + Consola.Color.RESET);
+            System.out.println("No hay mas movimientos Finalizado con " + numeroDeOrganismos + " organismos");
+        else System.out.println("Ya no hay organismos");
         System.out.println("Juego Terminado");
     }
 
@@ -105,7 +103,7 @@ public class Juego {
      * @return void
      */
     private static void configurarCoordenadasDeOrganismosIniciales() {
-        for (int i = 1; i <= lienzo.getNumeroDeOrganismosIniciales(); i++) {
+        for (int i = 1; i <= lienzo.getNumeroDeOrganismosVivosIniciales(); i++) {
 
             int x = 0;
             int y = 0;
